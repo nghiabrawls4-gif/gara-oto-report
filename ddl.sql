@@ -71,6 +71,15 @@ CREATE TABLE SparePart (
   NhaCungCap NVARCHAR(100) NULL
 );
 GO
+CREATE TABLE UsageParts (
+  MaDon VARCHAR(12) NOT NULL,   -- liên kết tới RepairDetail.MaDon
+  STT INT NOT NULL,             -- liên kết tới RepairDetail.STT
+  MaPT VARCHAR(10) NOT NULL,    -- mã phụ tùng
+  SoLuong INT NOT NULL CHECK (SoLuong > 0),
+  PRIMARY KEY (MaDon, STT, MaPT),
+  CONSTRAINT FK_UP_RepairDetail FOREIGN KEY (MaDon, STT) REFERENCES RepairDetail(MaDon, STT),
+  CONSTRAINT FK_UP_SparePart FOREIGN KEY (MaPT) REFERENCES SparePart(MaPT)
+);
 
 CREATE TABLE Invoice (
   MaHD VARCHAR(12) PRIMARY KEY,
