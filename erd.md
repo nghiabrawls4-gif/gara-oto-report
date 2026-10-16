@@ -85,9 +85,3 @@ erDiagram
     REPAIRORDER ||--|| INVOICE : "generates"
     MECHANIC ||--o{ INVOICE : "issues"
 ```
-
-## Giải thích ngắn
-- Mỗi thực thể liệt kê các thuộc tính chính; PK/UK/FK được chú thích.
-- RepairDetail sử dụng khóa ghép (MaDon, STT) để phân biệt các hạng mục trong cùng đơn.
-- UsageParts lưu chi tiết phụ tùng dùng cho từng hạng mục: khóa (MaDon, STT, MaPT).
-- ERD ở dạng Mermaid để GitHub render trực tiếp trong `erd.md`.

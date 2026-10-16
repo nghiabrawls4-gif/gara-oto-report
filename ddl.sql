@@ -71,15 +71,17 @@ CREATE TABLE SparePart (
   NhaCungCap NVARCHAR(100) NULL
 );
 GO
+
 CREATE TABLE UsageParts (
-  MaDon VARCHAR(12) NOT NULL,   -- liên kết tới RepairDetail.MaDon
-  STT INT NOT NULL,             -- liên kết tới RepairDetail.STT
-  MaPT VARCHAR(10) NOT NULL,    -- mã phụ tùng
+  MaDon VARCHAR(12) NOT NULL,
+  STT INT NOT NULL,
+  MaPT VARCHAR(10) NOT NULL,
   SoLuong INT NOT NULL CHECK (SoLuong > 0),
   PRIMARY KEY (MaDon, STT, MaPT),
   CONSTRAINT FK_UP_RepairDetail FOREIGN KEY (MaDon, STT) REFERENCES RepairDetail(MaDon, STT),
   CONSTRAINT FK_UP_SparePart FOREIGN KEY (MaPT) REFERENCES SparePart(MaPT)
 );
+GO
 
 CREATE TABLE Invoice (
   MaHD VARCHAR(12) PRIMARY KEY,
@@ -91,4 +93,72 @@ CREATE TABLE Invoice (
   CONSTRAINT FK_Invoice_RepairOrder FOREIGN KEY (MaDon) REFERENCES RepairOrder(MaDon),
   CONSTRAINT FK_Invoice_Mechanic FOREIGN KEY (MaNV) REFERENCES Mechanic(MaNV)
 );
+GO
+
+CREATE PROCEDURE sp_AddUsagePart
+  @MaDon VARCHAR(12),
+  @STT INT,
+  @MaPT VARCHAR(10),
+  @SoLuong INT
+AS
+BEGIN
+  SET NOCOUNT ON;
+  SET XACT_ABORT ON;
+  BEGIN TRAN;
+
+  DECLARE @SoTon INT;
+  SELECT @SoTon = SoLuongTon FROM SparePart WITH (UPDLOCK, HOLDLOCK) WHERE MaPT = @MaPT;
+
+  IF @SoTon IS NULL
+  BEGIN
+    ROLLBACK;
+    RAISERROR('Phụ tùng không tồn tại',16,1);
+    RETURN;
+  END
+
+  IF @SoTon < @SoLuong
+  BEGIN
+    ROLLBACK;
+    RAISERROR('Không đủ tồn kho: %s (tồn=%d, yêu cầu=%d)',16,1,@MaPT,@SoTon,@SoLuong);
+    RETURN;
+  END
+
+  INSERT INTO UsageParts(MaDon, STT, MaPT, SoLuong)
+  VALUES(@MaDon, @STT, @MaPT, @SoLuong);
+
+  UPDATE SparePart
+  SET SoLuongTon = SoLuongTon - @SoLuong
+  WHERE MaPT = @MaPT;
+
+  COMMIT TRAN;
+END
+GO
+
+CREATE PROCEDURE sp_RemoveUsagePart
+  @MaDon VARCHAR(12),
+  @STT INT,
+  @MaPT VARCHAR(10)
+AS
+BEGIN
+  SET NOCOUNT ON;
+  SET XACT_ABORT ON;
+  BEGIN TRAN;
+
+  DECLARE @Qty INT;
+  SELECT @Qty = SoLuong FROM UsageParts WHERE MaDon=@MaDon AND STT=@STT AND MaPT=@MaPT;
+  IF @Qty IS NULL
+  BEGIN
+    ROLLBACK;
+    RAISERROR('UsagePart không tồn tại',16,1);
+    RETURN;
+  END
+
+  DELETE FROM UsageParts WHERE MaDon=@MaDon AND STT=@STT AND MaPT=@MaPT;
+
+  UPDATE SparePart
+  SET SoLuongTon = SoLuongTon + @Qty
+  WHERE MaPT = @MaPT;
+
+  COMMIT TRAN;
+END
 GO

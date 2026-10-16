@@ -25,7 +25,7 @@ INSERT INTO Customer(MaKH, TenKH, SDT, Email, DiaChi) VALUES
 ('KH20', N'Trần Thị U', '0901000020', 'u20@gmail.com', N'Hà Nội');
 GO
 
--- 20 Vehicles
+-- Vehicles (20)
 INSERT INTO Vehicle(MaXe, BienSo, MaKH, HangXe, Model, NamSX) VALUES
 ('XE01', '29A-12345', 'KH01', N'Toyota', N'Vios', 2021),
 ('XE02', '29A-12346', 'KH02', N'Honda', N'City', 2020),
@@ -49,7 +49,7 @@ INSERT INTO Vehicle(MaXe, BienSo, MaKH, HangXe, Model, NamSX) VALUES
 ('XE20', '29A-12364', 'KH20', N'Toyota', N'Corolla', 2022);
 GO
 
--- 20 Mechanics
+-- Mechanics (20)
 INSERT INTO Mechanic(MaNV, TenNV, ChucVu, SDT) VALUES
 ('NV01', N'Nguyễn Văn Tân', N'Thợ máy', '0902000001'),
 ('NV02', N'Trần Văn Hoàng', N'Thợ điện', '0902000002'),
@@ -73,7 +73,7 @@ INSERT INTO Mechanic(MaNV, TenNV, ChucVu, SDT) VALUES
 ('NV20', N'Lương Thị Hà', N'Thợ điện', '0902000020');
 GO
 
--- 20 ServiceType
+-- ServiceType (20)
 INSERT INTO ServiceType(MaLoai, TenLoai, DonGia, MoTa) VALUES
 ('DV01', N'Thay dầu động cơ', 250000, N'Thay dầu máy và lọc dầu'),
 ('DV02', N'Sửa phanh', 500000, N'Kiểm tra và thay phanh'),
@@ -97,7 +97,7 @@ INSERT INTO ServiceType(MaLoai, TenLoai, DonGia, MoTa) VALUES
 ('DV20', N'Kiểm tra tổng thể', 450000, N'Hệ thống tổng thể');
 GO
 
--- 20 RepairOrder
+-- RepairOrder (20)
 INSERT INTO RepairOrder(MaDon, MaKH, MaXe, NgayTiepNhan, NgayHoanThanh, TrangThai, GhiChu) VALUES
 ('DON01', 'KH01', 'XE01', '2026-01-02', '2026-01-05', 'Completed', N'Bảo dưỡng định kỳ'),
 ('DON02', 'KH02', 'XE02', '2026-01-03', '2026-01-04', 'Completed', N'Sửa phanh'),
@@ -121,10 +121,9 @@ INSERT INTO RepairOrder(MaDon, MaKH, MaXe, NgayTiepNhan, NgayHoanThanh, TrangTha
 ('DON20', 'KH20', 'XE20', '2026-02-02', NULL, 'Received', N'Khách mới đến');
 GO
 
--- 20 RepairDetail (mỗi Don 1 mục)
+-- RepairDetail (20)
 INSERT INTO RepairDetail(MaDon, STT, MaLoai, DonGia, SoLuong) VALUES
 ('DON01', 1, 'DV01', 250000, 1),
-('DON01', 2, 'DV03', 700000, 1),
 ('DON02', 1, 'DV02', 500000, 1),
 ('DON03', 1, 'DV17', 600000, 1),
 ('DON04', 1, 'DV04', 600000, 1),
@@ -142,10 +141,11 @@ INSERT INTO RepairDetail(MaDon, STT, MaLoai, DonGia, SoLuong) VALUES
 ('DON16', 1, 'DV11', 300000, 1),
 ('DON17', 1, 'DV17', 600000, 1),
 ('DON18', 1, 'DV03', 700000, 1),
-('DON19', 1, 'DV09', 550000, 1);
+('DON19', 1, 'DV09', 550000, 1),
+('DON20', 1, 'DV20', 450000, 1);
 GO
 
--- 20 SparePart
+-- SparePart (20)
 INSERT INTO SparePart(MaPT, TenPT, DonGia, SoLuongTon, NhaCungCap) VALUES
 ('PT01', N'Lọc dầu', 120000, 50, N'VietAuto'),
 ('PT02', N'Bánh phanh', 350000, 20, N'PhanhPlus'),
@@ -169,20 +169,7 @@ INSERT INTO SparePart(MaPT, TenPT, DonGia, SoLuongTon, NhaCungCap) VALUES
 ('PT20', N'Bộ lọc nhiên liệu', 220000, 20, N'FuelLine');
 GO
 
-INSERT INTO UsageParts(MaDon, STT, MaPT, SoLuong) VALUES
-('DON01', 1, 'PT01', 1),
-('DON01', 2, 'PT10', 1),
-('DON02', 1, 'PT02', 2),
-('DON03', 1, 'PT12', 1),
-('DON05', 1, 'PT01', 1),
-('DON07', 1, 'PT06', 4),
-('DON08', 1, 'PT10', 1),
-('DON11', 1, 'PT03', 1),
-('DON13', 1, 'PT13', 1),
-('DON16', 1, 'PT04', 1);
-GO
-
--- 20 Invoices
+-- Invoices (20)
 INSERT INTO Invoice(MaHD, MaDon, MaNV, NgayLap, TriGia, DaThanhToan) VALUES
 ('HD01', 'DON01', 'NV01', '2026-01-06', 950000, 1),
 ('HD02', 'DON02', 'NV02', '2026-01-05', 500000, 1),
@@ -204,4 +191,18 @@ INSERT INTO Invoice(MaHD, MaDon, MaNV, NgayLap, TriGia, DaThanhToan) VALUES
 ('HD18', 'DON18', 'NV18', '2026-01-31', 700000, 1),
 ('HD19', 'DON19', 'NV19', '2026-02-03', 550000, 1),
 ('HD20', 'DON20', 'NV20', '2026-02-04', 450000, 0);
+GO
+
+-- UsageParts sample (10)
+INSERT INTO UsageParts(MaDon, STT, MaPT, SoLuong) VALUES
+('DON01', 1, 'PT01', 1),
+('DON01', 1, 'PT10', 1),
+('DON02', 1, 'PT02', 2),
+('DON03', 1, 'PT12', 1),
+('DON05', 1, 'PT01', 1),
+('DON07', 1, 'PT06', 4),
+('DON08', 1, 'PT10', 1),
+('DON11', 1, 'PT03', 1),
+('DON13', 1, 'PT13', 1),
+('DON16', 1, 'PT04', 1);
 GO
