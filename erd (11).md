@@ -1,5 +1,3 @@
-# ERD - Hệ thống quản lý gara ô tô (có ghi khóa chính)
-
 ```mermaid
 erDiagram
     CUSTOMER ||--o{ VEHICLE : "owns"
@@ -10,4 +8,5 @@ erDiagram
     REPAIRORDER ||--|| INVOICE : "generates"
     MECHANIC ||--o{ INVOICE : "issues"
     REPAIRDETAIL }o--o{ SPAREPART : "uses"
-    -- (Optional) REPAIRDETAIL ||--o{ USAGEPARTS : "uses-parts"
+    REPAIRDETAIL ||--o{ USAGEPARTS : "uses-parts"
+    SPAREPART ||--o{ USAGEPARTS : "is-used-in"
