@@ -169,6 +169,19 @@ INSERT INTO SparePart(MaPT, TenPT, DonGia, SoLuongTon, NhaCungCap) VALUES
 ('PT20', N'Bộ lọc nhiên liệu', 220000, 20, N'FuelLine');
 GO
 
+INSERT INTO UsageParts(MaDon, STT, MaPT, SoLuong) VALUES
+('DON01', 1, 'PT01', 1),
+('DON01', 2, 'PT10', 1),
+('DON02', 1, 'PT02', 2),
+('DON03', 1, 'PT12', 1),
+('DON05', 1, 'PT01', 1),
+('DON07', 1, 'PT06', 4),
+('DON08', 1, 'PT10', 1),
+('DON11', 1, 'PT03', 1),
+('DON13', 1, 'PT13', 1),
+('DON16', 1, 'PT04', 1);
+GO
+
 -- 20 Invoices
 INSERT INTO Invoice(MaHD, MaDon, MaNV, NgayLap, TriGia, DaThanhToan) VALUES
 ('HD01', 'DON01', 'NV01', '2026-01-06', 950000, 1),
